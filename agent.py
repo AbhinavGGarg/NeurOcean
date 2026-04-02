@@ -7,10 +7,18 @@ client = genai.Client(api_key=os.getenv("GEMINI_API_KEY"))
 
 INTERVENTIONS = ["alkalinity_enhancement", "shading",
                  "assisted_evolution", "pollution_reduction", "combined"]
-PROGRAM_FILE = "program.md"
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+IS_VERCEL = bool(os.getenv("VERCEL")) or bool(os.getenv("VERCEL_ENV"))
+DATA_DIR = os.getenv("NEUROCEAN_DATA_DIR") or ("/tmp/neurocean" if IS_VERCEL else BASE_DIR)
+os.makedirs(DATA_DIR, exist_ok=True)
+PROGRAM_FILE = os.path.join(DATA_DIR, "program.md")
+DEFAULT_PROGRAM_FILE = os.path.join(BASE_DIR, "program.md")
 
 
 def read_program():
+    if not os.path.exists(PROGRAM_FILE) and os.path.exists(DEFAULT_PROGRAM_FILE):
+        with open(DEFAULT_PROGRAM_FILE) as src, open(PROGRAM_FILE, "w") as dst:
+            dst.write(src.read())
     if os.path.exists(PROGRAM_FILE):
         with open(PROGRAM_FILE) as f:
             return f.read()

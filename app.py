@@ -12,8 +12,24 @@ from reward import compute_reward, compute_health_score
 
 app = Flask(__name__)
 
-RESULTS_FILE = "experiments.json"
-PROGRAM_FILE = "program.md"
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+IS_VERCEL = bool(os.getenv("VERCEL")) or bool(os.getenv("VERCEL_ENV"))
+DATA_DIR = os.getenv("NEUROCEAN_DATA_DIR") or ("/tmp/neurocean" if IS_VERCEL else BASE_DIR)
+os.makedirs(DATA_DIR, exist_ok=True)
+os.environ["NEUROCEAN_DATA_DIR"] = DATA_DIR
+
+RESULTS_FILE = os.path.join(DATA_DIR, "experiments.json")
+PROGRAM_FILE = os.path.join(DATA_DIR, "program.md")
+CONFIG_FILE = os.path.join(DATA_DIR, "config.json")
+DEFAULT_PROGRAM_FILE = os.path.join(BASE_DIR, "program.md")
+
+
+def _ensure_program_file():
+    if os.path.exists(PROGRAM_FILE):
+        return
+    if os.path.exists(DEFAULT_PROGRAM_FILE):
+        with open(DEFAULT_PROGRAM_FILE) as src, open(PROGRAM_FILE, "w") as dst:
+            dst.write(src.read())
 
 # ── Runner state ──────────────────────────────────────────────────────────────
 _runner = {
@@ -41,6 +57,7 @@ def save_history(history):
 
 def run_one_cycle():
     """Runs a single experiment cycle. Returns the result dict."""
+    _ensure_program_file()
     history = load_history()
     sim = ReefSimulator()
 
@@ -59,8 +76,8 @@ def run_one_cycle():
         sim._hotspot_history = deque([approx_hotspot] * 12, maxlen=12)
     else:
         # Use custom config if present
-        if os.path.exists("config.json"):
-            with open("config.json") as f:
+        if os.path.exists(CONFIG_FILE):
+            with open(CONFIG_FILE) as f:
                 cfg = json.load(f)
             sim.state.update({k: v for k, v in cfg.items() if k in sim.state})
             sim.state["omega_arag"] = sim._omega_from_ph(sim.state["ph"])
@@ -242,6 +259,7 @@ def runner_status():
 
 @app.route("/program")
 def get_program():
+    _ensure_program_file()
     if os.path.exists(PROGRAM_FILE):
         with open(PROGRAM_FILE) as f:
             return jsonify({"content": f.read()})
@@ -259,7 +277,7 @@ def configure():
     if os.path.exists(RESULTS_FILE):
         os.remove(RESULTS_FILE)
     # Save config for run_one_cycle to pick up
-    with open("config.json", "w") as f:
+    with open(CONFIG_FILE, "w") as f:
         json.dump(body, f, indent=2)
     return jsonify({"configured": True, "initial_state": body})
 
