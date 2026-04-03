@@ -963,9 +963,33 @@ input[type="range"]::-webkit-slider-thumb {
   position: relative;
   flex: 1;
   min-height: 340px;
+  border-radius: 0 0 18px 18px;
+  overflow: hidden;
   background:
     radial-gradient(circle at 20% -20%, rgba(52, 210, 255, 0.22), transparent 48%),
     linear-gradient(180deg, #041129 0%, #051733 60%, #031126 100%);
+  transition: filter 0.35s ease, box-shadow 0.35s ease, background 0.35s ease;
+}
+
+.reef-wrap.mode-critical {
+  background:
+    radial-gradient(circle at 20% -20%, rgba(255, 136, 115, 0.2), transparent 48%),
+    linear-gradient(180deg, #1b0d16 0%, #1a1021 60%, #170c1b 100%);
+  box-shadow: inset 0 0 50px rgba(255, 93, 111, 0.15);
+}
+
+.reef-wrap.mode-stressed {
+  background:
+    radial-gradient(circle at 20% -20%, rgba(255, 176, 98, 0.2), transparent 48%),
+    linear-gradient(180deg, #0f1831 0%, #102343 60%, #09172b 100%);
+  box-shadow: inset 0 0 45px rgba(255, 169, 94, 0.14);
+}
+
+.reef-wrap.mode-healthy {
+  background:
+    radial-gradient(circle at 20% -20%, rgba(84, 255, 203, 0.24), transparent 48%),
+    linear-gradient(180deg, #041c2e 0%, #0a2f48 60%, #042535 100%);
+  box-shadow: inset 0 0 55px rgba(95, 248, 188, 0.16);
 }
 
 canvas#reef {
@@ -1001,6 +1025,33 @@ canvas#reef {
   animation: driftMid 20s linear infinite;
 }
 
+.reef-caustics {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0.32;
+  background:
+    repeating-linear-gradient(
+      118deg,
+      rgba(181, 230, 255, 0.22) 0 2.2%,
+      rgba(181, 230, 255, 0.02) 2.2% 7.5%
+    );
+  mix-blend-mode: screen;
+  animation: causticShift 18s linear infinite;
+}
+
+.reef-depth-grid {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background:
+    linear-gradient(transparent 0 82%, rgba(8, 18, 36, 0.55) 82% 100%),
+    repeating-linear-gradient(90deg, rgba(159, 210, 255, 0.07) 0 1px, transparent 1px 10%);
+  opacity: 0.35;
+}
+
 .reef-particles {
   position: absolute;
   inset: 0;
@@ -1013,6 +1064,42 @@ canvas#reef {
   background-position: 0 0, 30px 60px;
   animation: bubbleFlow 26s linear infinite;
   opacity: 0.3;
+}
+
+.reef-scanline {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  pointer-events: none;
+}
+
+.reef-scanline::before {
+  content: "";
+  position: absolute;
+  left: -10%;
+  right: -10%;
+  height: 3px;
+  top: -10%;
+  background: linear-gradient(90deg, transparent 0%, rgba(88, 209, 255, 0.6) 20%, rgba(88, 209, 255, 0.1) 65%, transparent 100%);
+  filter: blur(0.3px);
+  animation: scanSweep 8s ease-in-out infinite;
+}
+
+.reef-foreground {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 24%;
+  z-index: 4;
+  pointer-events: none;
+  background:
+    radial-gradient(55px 120px at 8% 100%, rgba(39, 89, 83, 0.72), transparent 70%),
+    radial-gradient(65px 140px at 22% 100%, rgba(62, 133, 95, 0.58), transparent 72%),
+    radial-gradient(45px 120px at 76% 100%, rgba(39, 89, 83, 0.72), transparent 70%),
+    radial-gradient(75px 150px at 88% 100%, rgba(62, 133, 95, 0.55), transparent 72%);
+  opacity: 0.45;
+  animation: foregroundSway 6.6s ease-in-out infinite alternate;
 }
 
 .reef-state-overlay {
@@ -1053,6 +1140,23 @@ canvas#reef {
 @keyframes bubbleFlow {
   from { background-position: 0 0, 30px 60px; }
   to { background-position: 0 -240px, 30px -180px; }
+}
+
+@keyframes causticShift {
+  from { transform: translateX(0); }
+  to { transform: translateX(-12%); }
+}
+
+@keyframes scanSweep {
+  0% { top: -10%; opacity: 0; }
+  12% { opacity: 0.85; }
+  50% { opacity: 0.4; }
+  100% { top: 115%; opacity: 0; }
+}
+
+@keyframes foregroundSway {
+  from { transform: translateX(-1.5%); }
+  to { transform: translateX(1.5%); }
 }
 
 .reef-hud {
@@ -2004,14 +2108,18 @@ canvas#reef {
     <div class="col-stack">
       <article class="panel live-panel">
         <div class="panel-head">
-          <h3>Live Reef Simulation</h3>
+          <h3>Immersive Reef Theater</h3>
           <span class="panel-tag" id="reef-cyc">cycle 0</span>
         </div>
         <div class="reef-wrap" id="reef-wrap">
           <div class="reef-parallax reef-back"></div>
           <div class="reef-parallax reef-mid"></div>
+          <div class="reef-caustics"></div>
+          <div class="reef-depth-grid"></div>
           <canvas id="reef"></canvas>
           <div class="reef-particles" id="reef-particles"></div>
+          <div class="reef-scanline"></div>
+          <div class="reef-foreground"></div>
           <div class="reef-state-overlay">
             <span class="live-dot"></span>
             <span id="reef-live-label">System idle</span>
@@ -2539,6 +2647,21 @@ function drawReef() {
     ctx.fillRect(0, y0*H, W, (y1-y0)*H);
   });
 
+  // Flowing current lines for a more alive scene
+  const waveT = Date.now() / 1200;
+  for (let l = 0; l < 4; l++) {
+    const yBase = H * (0.2 + l * 0.12);
+    ctx.beginPath();
+    for (let x = 0; x <= W; x += 10) {
+      const y = yBase + Math.sin((x / 65) + waveT + l) * (4 + l * 0.8);
+      if (x === 0) ctx.moveTo(x, y);
+      else ctx.lineTo(x, y);
+    }
+    ctx.strokeStyle = `rgba(168,220,255,${0.06 + l * 0.02})`;
+    ctx.lineWidth = 1;
+    ctx.stroke();
+  }
+
   // Heat shimmer at very high DHW
   if (dhw > 3) {
     ctx.fillStyle = `rgba(255,60,0,${Math.min(.25,(dhw-3)/15)})`;
@@ -2627,6 +2750,13 @@ function drawReef() {
       ctx.fillRect(xi*TILE,0,TILE*2,TILE);
     }
   }
+
+  // Vignette depth
+  const edge = ctx.createRadialGradient(W * 0.5, H * 0.45, W * 0.2, W * 0.5, H * 0.45, W * 0.75);
+  edge.addColorStop(0, 'rgba(0,0,0,0)');
+  edge.addColorStop(1, 'rgba(2,8,18,0.38)');
+  ctx.fillStyle = edge;
+  ctx.fillRect(0, 0, W, H);
 }
 
 function paintBlock(ctx,x,y,w,h,c){
@@ -2875,6 +3005,10 @@ function updateReef(state){
   document.getElementById('hd-w').style.background=w>.7?'#4ade80':w>.5?'#ffb347':'#ff4444';
   const wrap = document.getElementById('reef-wrap');
   const stress = Math.max(0, Math.min(1, (b/100)*0.6 + Math.min(1,d/8)*0.4));
+  wrap.classList.remove('mode-critical', 'mode-stressed', 'mode-healthy');
+  if (stress > 0.62) wrap.classList.add('mode-critical');
+  else if (stress > 0.35) wrap.classList.add('mode-stressed');
+  else wrap.classList.add('mode-healthy');
   wrap.style.filter = `saturate(${1.12 - stress * 0.45}) contrast(${1.03 - stress * 0.08}) brightness(${1 - stress * 0.08})`;
   if (!rafId) drawReef();
 }
