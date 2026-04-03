@@ -561,6 +561,35 @@ input[type="range"]::-webkit-slider-thumb {
   padding: 6px 10px;
 }
 
+.system-rail {
+  margin-top: 14px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: rgba(6, 17, 33, 0.76);
+  padding: 8px;
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.system-stage {
+  border: 1px solid rgba(143, 177, 224, 0.2);
+  border-radius: 10px;
+  padding: 7px 8px;
+  font-size: 0.68rem;
+  color: var(--text-soft);
+  text-align: center;
+  transition: border-color 0.2s ease, transform 0.2s ease, color 0.2s ease, background 0.2s ease;
+}
+
+.system-stage.active {
+  border-color: rgba(62, 212, 255, 0.62);
+  color: #e8fbff;
+  background: rgba(30, 173, 232, 0.14);
+  transform: translateY(-1px);
+  box-shadow: 0 0 24px rgba(45, 184, 255, 0.2);
+}
+
 .hero-main {
   margin-top: 18px;
   display: grid;
@@ -807,6 +836,59 @@ input[type="range"]::-webkit-slider-thumb {
   margin-top: 10px;
 }
 
+.scenario-strip {
+  margin-top: 10px;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.scenario-pill {
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: rgba(7, 22, 43, 0.75);
+  padding: 7px 8px;
+}
+
+.scenario-pill span {
+  display: block;
+  font-size: 0.63rem;
+  color: var(--text-soft);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.scenario-pill b {
+  display: block;
+  margin-top: 4px;
+  font-size: 0.8rem;
+  color: #fff;
+  font-family: var(--font-mono);
+}
+
+.scenario-preview {
+  margin-top: 8px;
+  color: var(--text-muted);
+  font-size: 0.77rem;
+  line-height: 1.45;
+}
+
+.risk-chips {
+  margin-top: 8px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.risk-chip {
+  border-radius: 999px;
+  border: 1px solid rgba(255, 186, 107, 0.38);
+  background: rgba(255, 157, 90, 0.14);
+  color: #ffc992;
+  font-size: 0.66rem;
+  padding: 4px 8px;
+}
+
 .btn-quiet {
   border: 1px solid var(--border);
   border-radius: 10px;
@@ -892,6 +974,85 @@ canvas#reef {
   display: block;
   image-rendering: pixelated;
   image-rendering: crisp-edges;
+  position: relative;
+  z-index: 2;
+}
+
+.reef-parallax {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.reef-back {
+  z-index: 0;
+  background:
+    radial-gradient(500px 300px at 20% 10%, rgba(83, 210, 255, 0.16), transparent 65%),
+    linear-gradient(180deg, rgba(10, 36, 68, 0.45), rgba(5, 15, 30, 0.2));
+  animation: driftBack 16s ease-in-out infinite alternate;
+}
+
+.reef-mid {
+  z-index: 1;
+  background:
+    repeating-linear-gradient(90deg, rgba(162, 218, 255, 0.08) 0 14%, transparent 14% 28%);
+  opacity: 0.42;
+  transform: translateX(0);
+  animation: driftMid 20s linear infinite;
+}
+
+.reef-particles {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 3;
+  background-image:
+    radial-gradient(circle, rgba(180, 234, 255, 0.5) 1px, transparent 1px),
+    radial-gradient(circle, rgba(118, 204, 255, 0.35) 1px, transparent 1px);
+  background-size: 90px 90px, 120px 120px;
+  background-position: 0 0, 30px 60px;
+  animation: bubbleFlow 26s linear infinite;
+  opacity: 0.3;
+}
+
+.reef-state-overlay {
+  position: absolute;
+  left: 12px;
+  bottom: 12px;
+  z-index: 4;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: rgba(4, 15, 30, 0.78);
+  padding: 6px 10px;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  color: var(--text-muted);
+  font-size: 0.72rem;
+}
+
+.live-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 14px rgba(50, 219, 255, 0.5);
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes driftBack {
+  from { transform: translateY(-2%); opacity: 0.8; }
+  to { transform: translateY(2%); opacity: 1; }
+}
+
+@keyframes driftMid {
+  from { transform: translateX(0); }
+  to { transform: translateX(-80px); }
+}
+
+@keyframes bubbleFlow {
+  from { background-position: 0 0, 30px 60px; }
+  to { background-position: 0 -240px, 30px -180px; }
 }
 
 .reef-hud {
@@ -1032,6 +1193,28 @@ canvas#reef {
   margin-bottom: 7px;
 }
 
+.thinking-stages {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.thinking-step {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: rgba(8, 20, 40, 0.66);
+  color: var(--text-soft);
+  font-size: 0.68rem;
+  padding: 7px 8px;
+  text-align: center;
+}
+
+.thinking-step.active {
+  border-color: rgba(95, 248, 188, 0.48);
+  background: rgba(74, 226, 182, 0.14);
+  color: #e7fff4;
+}
+
 .agent-insight-row {
   margin-top: 6px;
 }
@@ -1168,6 +1351,34 @@ canvas#reef {
   line-height: 1.45;
 }
 
+.reasoning-grid {
+  margin-top: 7px;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 6px;
+}
+
+.reasoning-step {
+  border: 1px solid rgba(143, 177, 224, 0.22);
+  border-radius: 10px;
+  background: rgba(6, 16, 32, 0.72);
+  padding: 6px 7px;
+}
+
+.reasoning-k {
+  font-size: 0.61rem;
+  color: var(--text-soft);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.reasoning-v {
+  margin-top: 3px;
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  line-height: 1.42;
+}
+
 .chat-reward-row {
   margin-top: 7px;
   display: flex;
@@ -1214,43 +1425,65 @@ canvas#reef {
   overflow: auto;
   min-height: 280px;
   max-height: 460px;
+  padding: 12px;
 }
 
-.sb-table {
-  width: 100%;
-  border-collapse: collapse;
-}
-
-.sb-table th {
-  font-size: 0.66rem;
-  color: var(--text-soft);
-  text-transform: uppercase;
-  letter-spacing: 0.09em;
-  text-align: left;
+.timeline-card {
+  position: relative;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: rgba(8, 20, 40, 0.76);
   padding: 10px 12px;
-  border-bottom: 1px solid rgba(143, 177, 224, 0.16);
+  margin-bottom: 9px;
+  transition: transform 0.2s ease, border-color 0.2s ease;
 }
 
-.sb-table td {
-  padding: 8px 12px;
-  border-bottom: 1px solid rgba(143, 177, 224, 0.1);
-  font-size: 0.77rem;
+.timeline-card:hover {
+  transform: translateY(-1px);
+  border-color: var(--border-strong);
 }
 
-.sb-table tr:hover td {
-  background: rgba(12, 31, 62, 0.55);
+.timeline-card::before {
+  content: "";
+  position: absolute;
+  left: -6px;
+  top: 16px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 12px rgba(55, 211, 255, 0.5);
 }
 
-.sb-row-kept td:first-child {
-  border-left: 2px solid var(--accent-good);
+.timeline-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
 }
 
-.sb-row-disc td:first-child {
-  border-left: 2px solid rgba(143, 177, 224, 0.35);
+.timeline-cycle {
+  font-family: var(--font-mono);
+  color: #fff;
+  font-size: 0.78rem;
 }
 
-.sb-row-override td:first-child {
-  border-left: 2px solid #ffbf79;
+.timeline-status {
+  font-size: 0.67rem;
+  border-radius: 999px;
+  padding: 2px 8px;
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+}
+
+.timeline-status.kept {
+  border-color: rgba(80, 242, 161, 0.4);
+  color: var(--accent-good);
+}
+
+.timeline-status.discarded {
+  border-color: rgba(255, 100, 120, 0.35);
+  color: #ff93a2;
 }
 
 .int-pill {
@@ -1280,6 +1513,41 @@ canvas#reef {
 
 .rw-fill {
   height: 100%;
+}
+
+.timeline-hyp {
+  margin-top: 7px;
+  color: var(--text-muted);
+  font-size: 0.78rem;
+  line-height: 1.45;
+}
+
+.timeline-metrics {
+  margin-top: 8px;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.timeline-metric {
+  border: 1px solid rgba(143, 177, 224, 0.2);
+  border-radius: 10px;
+  padding: 6px 7px;
+  background: rgba(6, 16, 33, 0.7);
+}
+
+.timeline-metric .k {
+  font-size: 0.62rem;
+  color: var(--text-soft);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.timeline-metric .v {
+  margin-top: 4px;
+  font-family: var(--font-mono);
+  color: #fff;
+  font-size: 0.74rem;
 }
 
 .sb-empty {
@@ -1385,6 +1653,89 @@ canvas#reef {
   font-size: 0.72rem;
 }
 
+.notebook-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 10px;
+}
+
+.notebook-tab {
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: rgba(7, 20, 39, 0.75);
+  color: var(--text-muted);
+  font-size: 0.68rem;
+  padding: 5px 9px;
+  cursor: pointer;
+}
+
+.notebook-tab.active {
+  border-color: rgba(95, 248, 188, 0.45);
+  color: #dffff2;
+  background: rgba(95, 248, 188, 0.14);
+}
+
+.notebook-status {
+  margin-top: 8px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.nb-chip {
+  border-radius: 999px;
+  padding: 3px 7px;
+  font-size: 0.63rem;
+  border: 1px solid rgba(143, 177, 224, 0.24);
+  color: var(--text-muted);
+  background: rgba(8, 20, 38, 0.76);
+}
+
+.nb-chip.confirmed { border-color: rgba(80, 242, 161, 0.45); color: var(--accent-good); }
+.nb-chip.progress { border-color: rgba(123, 196, 255, 0.45); color: #9fd0ff; }
+.nb-chip.rejected { border-color: rgba(255, 104, 128, 0.38); color: #ff9bad; }
+.nb-chip.new { border-color: rgba(255, 188, 108, 0.4); color: #ffd39a; }
+
+.breakthrough-toast {
+  position: fixed;
+  right: 22px;
+  bottom: 22px;
+  z-index: 1200;
+  width: min(360px, calc(100vw - 24px));
+  border-radius: 16px;
+  border: 1px solid rgba(95, 248, 188, 0.45);
+  background: linear-gradient(160deg, rgba(10, 34, 48, 0.95), rgba(5, 18, 32, 0.95));
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5), 0 0 36px rgba(95, 248, 188, 0.22);
+  padding: 12px;
+  animation: breakthroughIn 0.35s ease;
+}
+
+.breakthrough-kicker {
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--accent-good);
+}
+
+.breakthrough-title {
+  margin-top: 4px;
+  font-size: 0.95rem;
+  font-weight: 700;
+}
+
+.breakthrough-body {
+  margin-top: 6px;
+  color: var(--text-muted);
+  font-size: 0.78rem;
+  line-height: 1.45;
+}
+
+@keyframes breakthroughIn {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;
@@ -1416,6 +1767,10 @@ canvas#reef {
 
   .dashboard-grid {
     grid-template-columns: 1fr;
+  }
+
+  .system-rail {
+    grid-template-columns: 1fr 1fr;
   }
 
   .env-grid {
@@ -1453,6 +1808,11 @@ canvas#reef {
   .results-summary,
   .sliders-grid,
   .env-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .scenario-strip,
+  .timeline-metrics {
     grid-template-columns: 1fr;
   }
 
@@ -1532,11 +1892,12 @@ canvas#reef {
     <div class="hero-top">
       <div>
         <div class="brand-title">NeurOcean</div>
-        <div class="brand-sub">AI coral reef research platform for simulated intervention strategy, autonomous reasoning, and ecosystem recovery analytics.</div>
+        <div class="brand-sub">A live AI coral recovery system where environment strategy, reinforcement learning, and autonomous hypotheses evolve cycle by cycle.</div>
         <div class="hero-chip-row">
-          <span class="hero-chip">Futuristic Marine Science</span>
-          <span class="hero-chip">Reinforcement Learning Loop</span>
-          <span class="hero-chip">Live Agent Reasoning</span>
+          <span class="hero-chip">Step 1: Configure Environment</span>
+          <span class="hero-chip">Step 2: Run Experiment</span>
+          <span class="hero-chip">Step 3: Watch AI Adapt</span>
+          <span class="hero-chip">Step 4: Discover Breakthroughs</span>
         </div>
       </div>
       <div class="status-chip">
@@ -1544,6 +1905,14 @@ canvas#reef {
         <span id="stext">Idle</span>
         <span class="pbadge" id="pbadge"></span>
       </div>
+    </div>
+
+    <div class="system-rail" id="system-rail">
+      <div class="system-stage active" data-stage="initializing">Initializing Environment</div>
+      <div class="system-stage" data-stage="running">Running Cycle</div>
+      <div class="system-stage" data-stage="evaluating">Evaluating Reward</div>
+      <div class="system-stage" data-stage="updating">Updating Policy</div>
+      <div class="system-stage" data-stage="hypothesis">Generating Hypothesis</div>
     </div>
 
     <div class="hero-main">
@@ -1570,6 +1939,18 @@ canvas#reef {
             <div class="stat-label">Accepted Cycles</div>
             <div class="stat-value" id="h-kpt">—</div>
           </div>
+          <div class="stat-box">
+            <div class="stat-label">Best Reef Ever</div>
+            <div class="stat-value" id="meta-best">—</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-label">Discoveries Unlocked</div>
+            <div class="stat-value" id="meta-disc">0</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-label">Strategies Learned</div>
+            <div class="stat-value" id="meta-strat">0</div>
+          </div>
         </div>
 
         <div class="controls">
@@ -1595,6 +1976,22 @@ canvas#reef {
           <div class="setup-summary">
             <h4>Scenario Configuration</h4>
             <p>Use setup controls to adjust baseline heat, chemistry, and biodiversity conditions before autonomous cycles begin.</p>
+            <div class="scenario-strip">
+              <div class="scenario-pill">
+                <span>Difficulty</span>
+                <b id="scenario-difficulty">Unstable</b>
+              </div>
+              <div class="scenario-pill">
+                <span>Survival Probability</span>
+                <b id="scenario-survival">58%</b>
+              </div>
+              <div class="scenario-pill">
+                <span>Efficiency Multiplier</span>
+                <b id="scenario-multiplier">x1.00</b>
+              </div>
+            </div>
+            <div class="scenario-preview" id="scenario-preview">Predicted trajectory: moderate stress with recoverable outcomes if interventions are sequenced early.</div>
+            <div class="risk-chips" id="scenario-risks"></div>
             <div class="setup-actions">
               <button id="btn-setup" class="btn-quiet" onclick="document.getElementById('setup-modal').style.display='flex'">Open Setup Controls</button>
             </div>
@@ -1611,7 +2008,14 @@ canvas#reef {
           <span class="panel-tag" id="reef-cyc">cycle 0</span>
         </div>
         <div class="reef-wrap" id="reef-wrap">
+          <div class="reef-parallax reef-back"></div>
+          <div class="reef-parallax reef-mid"></div>
           <canvas id="reef"></canvas>
+          <div class="reef-particles" id="reef-particles"></div>
+          <div class="reef-state-overlay">
+            <span class="live-dot"></span>
+            <span id="reef-live-label">System idle</span>
+          </div>
           <div class="reef-hud">
             <div class="hud-item"><div class="hud-dot" id="hd-b"></div><span>Bleach <b id="hv-b">—</b></span></div>
             <div class="hud-item"><div class="hud-dot" id="hd-d"></div><span>DHW <b id="hv-d">—</b></span></div>
@@ -1667,6 +2071,12 @@ canvas#reef {
             <div class="section-title" style="font-size:0.68rem;">Current Recommendation</div>
             <span class="panel-tag" id="agent-current-status">standby</span>
           </div>
+          <div class="thinking-stages" id="thinking-stages">
+            <div class="thinking-step active" data-think="observe">Observing Environment</div>
+            <div class="thinking-step" data-think="stress">Evaluating Stressors</div>
+            <div class="thinking-step" data-think="select">Selecting Intervention</div>
+            <div class="thinking-step" data-think="predict">Predicting Outcome</div>
+          </div>
           <div class="agent-insight-card">
             <h4>Live Insight</h4>
             <div class="agent-insight-row">
@@ -1680,6 +2090,10 @@ canvas#reef {
             <div class="agent-insight-row">
               <div class="agent-k">Reasoning</div>
               <div class="agent-v" id="agent-current-rsn">The AI reasoning trace will stream here once cycles begin.</div>
+            </div>
+            <div class="agent-insight-row">
+              <div class="agent-k">Confidence</div>
+              <div class="agent-v" id="agent-confidence">—</div>
             </div>
           </div>
         </div>
@@ -1699,23 +2113,10 @@ canvas#reef {
   <section class="insights-grid">
     <article class="panel">
       <div class="panel-head">
-        <h3>Experiment Scoreboard</h3>
+        <h3>Experiment Timeline</h3>
         <span class="panel-tag" id="sb-count">0 cycles</span>
       </div>
-      <div class="sb-scroll">
-        <table class="sb-table">
-          <thead>
-            <tr>
-              <th>#</th>
-              <th>Intervention</th>
-              <th>Reward</th>
-              <th>Health</th>
-              <th>Status</th>
-            </tr>
-          </thead>
-          <tbody id="sb-body"></tbody>
-        </table>
-      </div>
+      <div class="sb-scroll" id="sb-body"></div>
     </article>
 
     <article class="panel">
@@ -1726,6 +2127,12 @@ canvas#reef {
       <div class="knowledge-wrap" id="prog"></div>
     </article>
   </section>
+</div>
+
+<div class="breakthrough-toast" id="breakthrough-toast" style="display:none;">
+  <div class="breakthrough-kicker">Breakthrough Found</div>
+  <div class="breakthrough-title" id="breakthrough-title">High-value intervention discovered</div>
+  <div class="breakthrough-body" id="breakthrough-body">The agent found a promising strategy with a major reward improvement.</div>
 </div>
 <script>
 // ════════════════════════════════════════════════
@@ -1744,6 +2151,56 @@ const SLIDER_DEFS = [
 
 const setupValues = {};
 SLIDER_DEFS.forEach(d => setupValues[d.key] = d.def);
+
+const SYSTEM_STAGES = ['initializing', 'running', 'evaluating', 'updating', 'hypothesis'];
+const THINK_STAGES = ['observe', 'stress', 'select', 'predict'];
+let _lastTypedCycle = 0;
+let _lastBreakthroughCycle = 0;
+let _stageTicker = 0;
+let _notebookTab = 'mission';
+let _latestProgramContent = '';
+const META_KEY = 'neurocean_meta_v1';
+const metaProgress = loadMetaProgress();
+
+function loadMetaProgress() {
+  try {
+    const raw = localStorage.getItem(META_KEY);
+    if (!raw) return { bestHealthEver: 0, discoveries: 0, strategies: [] };
+    const parsed = JSON.parse(raw);
+    return {
+      bestHealthEver: Number(parsed.bestHealthEver || 0),
+      discoveries: Number(parsed.discoveries || 0),
+      strategies: Array.isArray(parsed.strategies) ? parsed.strategies : []
+    };
+  } catch (e) {
+    return { bestHealthEver: 0, discoveries: 0, strategies: [] };
+  }
+}
+
+function saveMetaProgress() {
+  localStorage.setItem(META_KEY, JSON.stringify(metaProgress));
+}
+
+function refreshMetaUI() {
+  const best = document.getElementById('meta-best');
+  const disc = document.getElementById('meta-disc');
+  const strat = document.getElementById('meta-strat');
+  if (best) best.textContent = metaProgress.bestHealthEver ? `${metaProgress.bestHealthEver.toFixed(1)}/100` : '—';
+  if (disc) disc.textContent = String(metaProgress.discoveries || 0);
+  if (strat) strat.textContent = String((metaProgress.strategies || []).length);
+}
+
+function updateMetaProgress(experiments, summary) {
+  if (!experiments || !experiments.length) return;
+  metaProgress.bestHealthEver = Math.max(metaProgress.bestHealthEver || 0, Number(summary.best_health || 0));
+  const discoveriesNow = experiments.filter((e) => Number(e.reward || 0) > 0.12).length;
+  metaProgress.discoveries = Math.max(metaProgress.discoveries || 0, discoveriesNow);
+  const strategies = new Set([...(metaProgress.strategies || [])]);
+  experiments.filter((e) => e.kept).forEach((e) => strategies.add(e.intervention || 'unknown'));
+  metaProgress.strategies = Array.from(strategies);
+  saveMetaProgress();
+  refreshMetaUI();
+}
 
 function buildSliders() {
   const grid = document.getElementById('sliders-grid');
@@ -1779,6 +2236,52 @@ function onSlider(key, val, unit) {
   updateModalPreview();
 }
 
+function deriveScenarioInsights(v) {
+  const omega = Math.min(5, Math.max(1, 3.6 + 5 * (v.ph - 8.1)));
+  const stress =
+    (v.bleaching_pct / 100) * 0.3 +
+    Math.min(1, v.dhw / 8) * 0.24 +
+    Math.max(0, (v.temperature_c - 28) / 5) * 0.16 +
+    Math.max(0, (8.1 - v.ph) / 0.5) * 0.1 +
+    (1 - v.water_quality) * 0.1 +
+    (1 - (v.adaptation_score || 0.15)) * 0.05 +
+    Math.max(0, 1 - v.species_count / 35) * 0.05;
+
+  const stressScore = Math.max(0, Math.min(1, stress));
+  const survival = Math.round((1 - stressScore) * 82 + 12);
+  const difficulty = stressScore < 0.35 ? 'Easy' : stressScore < 0.62 ? 'Unstable' : 'Critical';
+  const multiplier = (1 + stressScore * 1.2).toFixed(2);
+  const outlook = stressScore < 0.35
+    ? 'Predicted trajectory: high resilience and smooth recovery if interventions remain balanced.'
+    : stressScore < 0.62
+      ? 'Predicted trajectory: recoverable with careful sequencing across DHW control and chemistry.'
+      : 'Predicted trajectory: severe collapse risk unless early cycles aggressively suppress heat and bleaching.';
+  const risks = [];
+  if (v.bleaching_pct > 55) risks.push('High bleaching risk');
+  if (v.dhw > 3.5) risks.push('Heat stress escalation');
+  if (omega < 3) risks.push('Unstable chemistry');
+  if (v.water_quality < 0.55) risks.push('Low water quality');
+  if (v.adaptation_score < 0.2) risks.push('Low adaptation reserve');
+  return { difficulty, survival, multiplier, outlook, risks };
+}
+
+function applyScenarioInsights(insights) {
+  const diffEl = document.getElementById('scenario-difficulty');
+  const surviveEl = document.getElementById('scenario-survival');
+  const multEl = document.getElementById('scenario-multiplier');
+  const previewEl = document.getElementById('scenario-preview');
+  const risksEl = document.getElementById('scenario-risks');
+  if (diffEl) diffEl.textContent = insights.difficulty;
+  if (surviveEl) surviveEl.textContent = `${insights.survival}%`;
+  if (multEl) multEl.textContent = `x${insights.multiplier}`;
+  if (previewEl) previewEl.textContent = insights.outlook;
+  if (risksEl) {
+    risksEl.innerHTML = (insights.risks.length ? insights.risks : ['No critical risks detected'])
+      .map((risk) => `<span class="risk-chip">${risk}</span>`)
+      .join('');
+  }
+}
+
 function updateModalPreview() {
   const v = setupValues;
   let s = 0;
@@ -1799,6 +2302,20 @@ function updateModalPreview() {
   const colors = {bad:'#ff4444',normal:'#4db8ff',good:'#00ff88'};
   document.getElementById('modal-bar').style.background = colors[cls];
   document.getElementById('modal-box').style.borderColor = colors[cls]+'44';
+  applyScenarioInsights(deriveScenarioInsights(v));
+  if (document.getElementById('app').style.display === 'flex') {
+    updateReef({
+      bleaching_pct: v.bleaching_pct,
+      temperature_c: v.temperature_c,
+      dhw: v.dhw,
+      ph: v.ph,
+      water_quality: v.water_quality,
+      species_count: v.species_count,
+      coral_cover_pct: v.coral_cover_pct,
+      adaptation_score: v.adaptation_score,
+      omega_arag: Math.min(5,Math.max(1,3.6+5*(v.ph-8.1)))
+    });
+  }
 }
 
 function loadDefaults() {
@@ -1824,6 +2341,10 @@ async function applySetupAndStart() {
   const score = parseInt(document.getElementById('mhp-score').textContent);
   applyTheme(score);
   updateHealthRing(score);
+  applyScenarioInsights(deriveScenarioInsights(setupValues));
+  refreshMetaUI();
+  setSystemStage('initializing', 'Environment initialized');
+  setThinkingStage('observe');
   // Set reef initial visual
   updateReef({
     bleaching_pct: setupValues.bleaching_pct,
@@ -1861,6 +2382,52 @@ function updateHealthRing(score) {
     else if (pct < 58) stateEl.textContent = 'Stabilizing';
     else stateEl.textContent = 'Healthy trajectory';
   }
+}
+
+function setSystemStage(stage, customLabel) {
+  document.querySelectorAll('.system-stage').forEach((node) => {
+    node.classList.toggle('active', node.dataset.stage === stage);
+  });
+  const label = document.getElementById('reef-live-label');
+  if (label) label.textContent = customLabel || stage.replace(/^\w/, (m) => m.toUpperCase());
+}
+
+function setThinkingStage(stage) {
+  document.querySelectorAll('.thinking-step').forEach((node) => {
+    node.classList.toggle('active', node.dataset.think === stage);
+  });
+}
+
+function stepSystemProgress(running) {
+  if (!running) {
+    setSystemStage('initializing', 'System idle');
+    setThinkingStage('observe');
+    return;
+  }
+  const stage = SYSTEM_STAGES[_stageTicker % SYSTEM_STAGES.length];
+  const think = THINK_STAGES[_stageTicker % THINK_STAGES.length];
+  const labels = {
+    initializing: 'Initializing environment',
+    running: 'Running cycle',
+    evaluating: 'Evaluating reward',
+    updating: 'Updating policy',
+    hypothesis: 'Generating hypothesis'
+  };
+  setSystemStage(stage, labels[stage]);
+  setThinkingStage(think);
+  _stageTicker += 1;
+}
+
+function showBreakthrough(title, body) {
+  const toast = document.getElementById('breakthrough-toast');
+  if (!toast) return;
+  document.getElementById('breakthrough-title').textContent = title;
+  document.getElementById('breakthrough-body').textContent = body;
+  toast.style.display = 'block';
+  clearTimeout(showBreakthrough._timer);
+  showBreakthrough._timer = setTimeout(() => {
+    toast.style.display = 'none';
+  }, 5200);
 }
 
 // ════════════════════════════════════════════════
@@ -2306,6 +2873,9 @@ function updateReef(state){
   document.getElementById('hd-d').style.background=d<2?'#4db8ff':d<4?'#ffb347':'#ff4444';
   document.getElementById('hd-o').style.background=o>3.2?'#c084fc':o>2.8?'#ffb347':'#ff4444';
   document.getElementById('hd-w').style.background=w>.7?'#4ade80':w>.5?'#ffb347':'#ff4444';
+  const wrap = document.getElementById('reef-wrap');
+  const stress = Math.max(0, Math.min(1, (b/100)*0.6 + Math.min(1,d/8)*0.4));
+  wrap.style.filter = `saturate(${1.12 - stress * 0.45}) contrast(${1.03 - stress * 0.08}) brightness(${1 - stress * 0.08})`;
   if (!rafId) drawReef();
 }
 
@@ -2379,44 +2949,53 @@ const INT_CLASS={
 };
 
 function updateScoreboard(experiments){
-  const tbody=document.getElementById('sb-body');
+  const container=document.getElementById('sb-body');
   if(!experiments || !experiments.length){
-    tbody.innerHTML = `
-      <tr>
-        <td colspan="5">
-          <div class="sb-empty">
-            <strong>No experiments yet</strong>
-            Start the experiment to generate live cycles, interventions, and reward outcomes.
-          </div>
-        </td>
-      </tr>`;
+    container.innerHTML = `
+      <div class="sb-empty">
+        <strong>No experiments yet</strong>
+        Start the experiment to generate live cycles, interventions, and reward outcomes.
+      </div>`;
     document.getElementById('sb-count').textContent='0 cycles';
     return;
   }
   const sorted=[...experiments].reverse().slice(0,60);
-  tbody.innerHTML=sorted.map(e=>{
+  container.innerHTML=sorted.map(e=>{
     const intKey=e.intervention||'';
     const cls=intKey.startsWith('Override')?'int-override':(INT_CLASS[intKey]||'int-combined');
-    const rowCls=intKey.startsWith('Override')?'sb-row-override':e.kept?'sb-row-kept':'sb-row-disc';
     const rwd=e.reward||0;
     const rwdCol=rwd>.1?'#00ff88':rwd>0?'#00d2b4':'#ff4444';
     const barW=Math.abs(rwd)/.6*100;
     const health=e.health_score||0;
-    const prevHealth=experiments[e.cycle-2]?.health_score||health;
+    const prevHealth=experiments[e.cycle-2]?.health_score ?? health;
     const hDelta=health-prevHealth;
-    const statusIcon=e.kept?'<span style="color:#00d2b4">✓</span>':'<span style="color:#604060">↩</span>';
-    return `<tr class="${rowCls}">
-      <td style="font-family:var(--mono);color:var(--text-muted)">${e.cycle}</td>
-      <td><span class="int-pill ${cls}">${(intKey||'—').replace(/_/g,' ')}</span></td>
-      <td style="font-family:var(--mono)">
-        <span style="color:${rwdCol}">${rwd>0?'+':''}${rwd.toFixed(3)}</span>
-        <div class="rw-bar"><div class="rw-fill" style="width:${barW.toFixed(1)}%;background:${rwdCol}"></div></div>
-      </td>
-      <td style="font-family:var(--mono);color:var(--text-dim)">${health.toFixed(1)}
-        ${hDelta!==0?`<span style="color:${hDelta>0?'#00ff88':'#ff4444'};font-size:8px">${hDelta>0?'+':''}${hDelta.toFixed(1)}</span>`:''}
-      </td>
-      <td>${statusIcon}</td>
-    </tr>`;
+    const statusCls = e.kept ? 'kept' : 'discarded';
+    const statusLabel = e.kept ? 'accepted' : 'discarded';
+    const safeHyp = escapeHtml(e.hypothesis || 'No hypothesis recorded.');
+    const safeInt = escapeHtml((intKey||'—').replace(/_/g,' '));
+    return `<div class="timeline-card">
+      <div class="timeline-top">
+        <div class="timeline-cycle">Cycle ${e.cycle}</div>
+        <div class="timeline-status ${statusCls}">${statusLabel}</div>
+      </div>
+      <div style="margin-top:6px;"><span class="int-pill ${cls}">${safeInt}</span></div>
+      <div class="timeline-hyp">${safeHyp}</div>
+      <div class="timeline-metrics">
+        <div class="timeline-metric">
+          <div class="k">Reward</div>
+          <div class="v" style="color:${rwdCol}">${rwd>0?'+':''}${Number(rwd).toFixed(3)}</div>
+          <div class="rw-bar"><div class="rw-fill" style="width:${barW.toFixed(1)}%;background:${rwdCol}"></div></div>
+        </div>
+        <div class="timeline-metric">
+          <div class="k">Health</div>
+          <div class="v">${Number(health).toFixed(1)} ${hDelta!==0?`<span style="color:${hDelta>0?'#00ff88':'#ff6666'}">${hDelta>0?'+':''}${hDelta.toFixed(1)}</span>`:''}</div>
+        </div>
+        <div class="timeline-metric">
+          <div class="k">Intensity</div>
+          <div class="v">${e.intensity}</div>
+        </div>
+      </div>
+    </div>`;
   }).join('');
   document.getElementById('sb-count').textContent=`${experiments.length} cycles`;
 }
@@ -2437,6 +3016,31 @@ const INT_COLOR = {
 };
 
 function intColor(key){ return INT_COLOR[key] || '#888'; }
+
+function typewriterText(el, text, speed = 12) {
+  if (!el) return;
+  const safe = String(text || '');
+  el.textContent = '';
+  let i = 0;
+  const tick = () => {
+    if (i >= safe.length) return;
+    el.textContent += safe.charAt(i);
+    i += 1;
+    setTimeout(tick, speed);
+  };
+  tick();
+}
+
+function reasoningBlocks(reasoning = '') {
+  const chunks = String(reasoning).split(/(?<=[.!?])\s+/).filter(Boolean).slice(0, 4);
+  const labels = ['Observe', 'Stress', 'Select', 'Predict'];
+  return chunks.map((txt, i) => `
+    <div class="reasoning-step">
+      <div class="reasoning-k">${labels[i] || 'Reason'}</div>
+      <div class="reasoning-v">${escapeHtml(txt)}</div>
+    </div>
+  `).join('');
+}
 
 function addTypingIndicator(){
   const feed = document.getElementById('chat-feed');
@@ -2486,17 +3090,19 @@ function addChatMessage(exp){
   // Build message HTML
   const el = document.createElement('div');
   el.className = 'chat-msg';
+  const safeHyp = escapeHtml(exp.hypothesis || '—');
+  const safeInt = escapeHtml((intKey || '—').replace(/_/g,' '));
   el.innerHTML = `
     <div class="chat-avatar avatar-agent">AI</div>
     <div class="chat-bubble ${bubbleCls}">
       <div class="chat-meta">
         <span style="color:var(--text-dim)">cycle ${exp.cycle}</span>
-        <span style="color:${intColor(intKey)};font-weight:600">${intKey.replace(/_/g,' ')}</span>
+        <span style="color:${intColor(intKey)};font-weight:600">${safeInt}</span>
         <span style="color:var(--text-muted)">@ ${exp.intensity}</span>
         ${statusTag}
       </div>
-      <div class="chat-text">${exp.hypothesis || '—'}</div>
-      ${exp.reasoning && !isOverride ? `<div class="chat-reasoning">${exp.reasoning}</div>` : ''}
+      <div class="chat-text">${safeHyp}</div>
+      ${exp.reasoning && !isOverride ? `<div class="reasoning-grid">${reasoningBlocks(exp.reasoning)}</div>` : ''}
       <div class="chat-reward-row">
         <span class="chat-rwd" style="background:${rwdBg};color:${rwdCol}">${rwd>0?'+':''}${rwd} reward</span>
         <span style="font-size:9px;color:var(--text-muted);font-family:var(--mono)">health ${exp.health_score||'—'}/100</span>
@@ -2505,6 +3111,7 @@ function addChatMessage(exp){
 
   feed.appendChild(el);
   feed.scrollTop = feed.scrollHeight;
+  setThinkingStage('predict');
 
   // Keep feed to last 40 messages
   const msgs = feed.querySelectorAll('.chat-msg');
@@ -2534,6 +3141,7 @@ function showTypingIfRunning(){
   const feed = document.getElementById('chat-feed');
   if(!document.getElementById('typing-msg')){
     addTypingIndicator();
+    setThinkingStage('stress');
   }
 }
 
@@ -2556,10 +3164,12 @@ function updateChatStatus(running){
     badge.textContent = '● live';
     badge.style.color = 'var(--theme)';
     badge.style.background = 'rgba(0,210,180,.1)';
+    stepSystemProgress(true);
   } else {
     badge.textContent = 'idle';
     badge.style.color = 'var(--text-muted)';
     badge.style.background = 'var(--surface2)';
+    stepSystemProgress(false);
   }
 }
 
@@ -2568,14 +3178,29 @@ function updateDashboard(data){
   if(!experiments||!experiments.length){
     updateHealthRing(38);
     updateScoreboard([]);
+    stepSystemProgress(false);
+    refreshMetaUI();
     return;
   }
   const last=experiments[experiments.length-1];
   const state=last.state_after;
+  const prev = experiments[experiments.length - 2];
+  const prevBestReward = experiments.length > 1
+    ? Math.max(...experiments.slice(0, -1).map((e) => Number(e.reward || -Infinity)))
+    : -Infinity;
 
   // Apply color theme
   applyTheme(summary.current_health);
   updateHealthRing(summary.current_health);
+  applyScenarioInsights(deriveScenarioInsights({
+    bleaching_pct: state.bleaching_pct || 0,
+    dhw: state.dhw || 0,
+    temperature_c: state.temperature_c || 29.5,
+    ph: state.ph || 8,
+    water_quality: state.water_quality || 0.45,
+    adaptation_score: state.adaptation_score || 0.15,
+    species_count: state.species_count || 18
+  }));
 
   // Header
   document.getElementById('h-cyc').textContent=summary.total_cycles;
@@ -2599,8 +3224,13 @@ function updateDashboard(data){
   const bi=experiments.findIndex(e=>e.reward===summary.best_reward);
   document.getElementById('mc-rwd-d').innerHTML=`<span class="up">cycle ${bi+1}</span>`;
   document.getElementById('agent-current-int').innerHTML = `<strong>${(last.intervention||'—').replace(/_/g,' ')}</strong> @ ${last.intensity}`;
-  document.getElementById('agent-current-hyp').textContent = last.hypothesis || 'No hypothesis recorded yet.';
-  document.getElementById('agent-current-rsn').textContent = last.reasoning || 'Reasoning unavailable for this cycle.';
+  const confidence = Math.max(48, Math.min(98, Math.round((last.reward + 0.35) / 0.85 * 100)));
+  document.getElementById('agent-confidence').textContent = `${confidence}% confidence · tags: risk, chemistry, adaptation`;
+  if (last.cycle > _lastTypedCycle) {
+    typewriterText(document.getElementById('agent-current-hyp'), last.hypothesis || 'No hypothesis recorded yet.', 9);
+    typewriterText(document.getElementById('agent-current-rsn'), last.reasoning || 'Reasoning unavailable for this cycle.', 7);
+    _lastTypedCycle = last.cycle;
+  }
 
   // Charts (last 80)
   const recent=experiments.slice(-80);
@@ -2618,6 +3248,16 @@ function updateDashboard(data){
   updateEnvGrid(state);
   updateScoreboard(experiments);
   updateChatFeed(experiments);
+  updateMetaProgress(experiments, summary);
+  stepSystemProgress(document.getElementById('sdot').dataset.running === '1');
+
+  if (last.cycle !== _lastBreakthroughCycle && (Number(last.reward) > Number(prevBestReward) + 0.03 || (last.health_score || 0) >= 90 && (!prev || (prev.health_score || 0) < 90))) {
+    _lastBreakthroughCycle = last.cycle;
+    showBreakthrough(
+      `Cycle ${last.cycle}: ${(last.intervention || 'strategy').replace(/_/g, ' ')} breakthrough`,
+      `Reward ${last.reward > 0 ? '+' : ''}${Number(last.reward).toFixed(3)} · Health ${Number(last.health_score || 0).toFixed(1)} · ${last.hypothesis || 'Agent identified a high-impact shift.'}`
+    );
+  }
 }
 
 async function fetchData(){
@@ -2707,30 +3347,82 @@ function renderProgram(content){
     return;
   }
 
-  const sectionsHtml = parsed.sections
-    .filter((sec) => sec.lines.some((l) => l && l.trim()))
-    .map((sec, idx) => `
-      <details class="knowledge-item" ${idx < 2 ? 'open' : ''}>
-        <summary>${escapeHtml(sec.title || `Section ${idx + 1}`)}</summary>
-        <div class="knowledge-body">${renderSectionLines(sec.lines)}</div>
-      </details>
-    `)
-    .join('');
+  const buckets = {
+    mission: null,
+    current: null,
+    findings: null,
+    rules: null,
+    hypotheses: null,
+    next: null
+  };
+
+  parsed.sections.forEach((sec) => {
+    const t = (sec.title || '').toLowerCase();
+    if (t.includes('mission')) buckets.mission = sec;
+    else if (t.includes('current best')) buckets.current = sec;
+    else if (t.includes('known finding')) buckets.findings = sec;
+    else if (t.includes('research rule')) buckets.rules = sec;
+    else if (t.includes('hypoth')) buckets.hypotheses = sec;
+    else if (t.includes('next')) buckets.next = sec;
+  });
+
+  const tabOrder = [
+    ['mission', 'Mission'],
+    ['current', 'Current Best Result'],
+    ['findings', 'Findings'],
+    ['rules', 'Rules'],
+    ['hypotheses', 'Hypotheses'],
+    ['next', 'Next Experiment']
+  ];
+
+  if (!tabOrder.some(([k]) => buckets[k])) {
+    container.innerHTML = '<div class="sb-empty"><strong>No structured sections found</strong>Program content is empty.</div>';
+    return;
+  }
+
+  if (!buckets[_notebookTab]) {
+    _notebookTab = tabOrder.find(([key]) => buckets[key])?.[0] || 'mission';
+  }
+  const activeSection = buckets[_notebookTab] || { title: 'Section', lines: [] };
+  const bodyText = (activeSection.lines || []).join('\n');
+  const statusChips = [];
+  if (/CONFIRMED/i.test(bodyText)) statusChips.push('<span class="nb-chip confirmed">CONFIRMED</span>');
+  if (/IN PROGRESS/i.test(bodyText)) statusChips.push('<span class="nb-chip progress">IN PROGRESS</span>');
+  if (/REJECTED/i.test(bodyText)) statusChips.push('<span class="nb-chip rejected">REJECTED</span>');
+  if (/NEW/i.test(bodyText)) statusChips.push('<span class="nb-chip new">NEW</span>');
 
   container.innerHTML = `
     <div class="knowledge-head">
       <h4>${escapeHtml(parsed.title)}</h4>
-      <p>Structured AI research brief with mission context, findings, hypotheses, and priorities.</p>
+      <p>Lab notebook view for evolving mission goals, findings, hypotheses, and experimental priorities.</p>
+      <div class="notebook-tabs">
+        ${tabOrder.map(([key, label]) => {
+          const disabled = !buckets[key] ? 'style="opacity:.45;pointer-events:none;"' : '';
+          return `<button class="notebook-tab ${_notebookTab===key?'active':''}" ${disabled} onclick="setNotebookTab('${key}')">${label}</button>`;
+        }).join('')}
+      </div>
     </div>
-    ${sectionsHtml || '<div class="sb-empty"><strong>No structured sections found</strong>Program content is empty.</div>'}
+    <details class="knowledge-item" open>
+      <summary>${escapeHtml(activeSection.title || 'Notebook Section')}</summary>
+      <div class="knowledge-body">
+        ${renderSectionLines(activeSection.lines || [])}
+        <div class="notebook-status">${statusChips.join('')}</div>
+      </div>
+    </details>
   `;
+}
+
+function setNotebookTab(tab){
+  _notebookTab = tab;
+  renderProgram(_latestProgramContent || '');
 }
 
 async function fetchProg(){
   try{
     const r=await fetch('/program');
     const d=await r.json();
-    renderProgram(d.content || '');
+    _latestProgramContent = d.content || '';
+    renderProgram(_latestProgramContent);
   }catch(e){}
 }
 
@@ -2770,6 +3462,7 @@ function setRunUI(running){
 async function startForever(){
   await fetch('/start',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({cycles:null,delay:1.5})});
   setRunUI(true); document.getElementById('stext').textContent='Running ∞';
+  setSystemStage('running', 'Running cycle');
   document.getElementById('pbadge').style.display=''; startPoll();
 }
 async function startN(){
@@ -2777,11 +3470,13 @@ async function startN(){
   if(!n||n<1){alert('Enter a number of cycles.');return;}
   await fetch('/start',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({cycles:n,delay:1.5})});
   setRunUI(true); document.getElementById('stext').textContent=`Running ${n}`;
+  setSystemStage('running', 'Running cycle');
   document.getElementById('pbadge').style.display=''; startPoll();
 }
 async function stopRunner(){
   await fetch('/stop',{method:'POST'});
   setRunUI(false); document.getElementById('stext').textContent='Stopped';
+  setSystemStage('initializing', 'System idle');
   document.getElementById('pbadge').style.display='none'; stopPoll();
   fetchData();
 }
@@ -2793,12 +3488,14 @@ async function runOne(){
   statusDot.style.background = '#ffb86b';
   statusDot.style.boxShadow = '0 0 0 8px rgba(255, 182, 107, 0.12), 0 0 18px rgba(255, 182, 107, 0.45)';
   document.getElementById('stext').textContent='Running...';
+  setSystemStage('running', 'Running cycle');
   try{ await fetch('/run',{method:'POST'}); await fetchData(); await fetchProg(); }catch(e){}
   document.getElementById('btn-one').disabled=false;
   statusDot.dataset.running = '0';
   statusDot.style.background = 'var(--accent)';
   statusDot.style.boxShadow = '0 0 0 8px rgba(62, 212, 255, 0.09), 0 0 18px rgba(62, 212, 255, 0.45)';
   document.getElementById('stext').textContent='Idle';
+  setSystemStage('initializing', 'System idle');
 }
 
 function startPoll(){
@@ -2812,10 +3509,12 @@ function startPoll(){
     if(rs.running){
       // Show typing dots while waiting for next cycle
       showTypingIfRunning();
+      stepSystemProgress(true);
     }
     if(!rs.running){
       setRunUI(false);
       document.getElementById('stext').textContent=rs.status==='done'?'Done ✓':rs.status==='error'?'Error ✗':'Stopped';
+      setSystemStage(rs.status==='done' ? 'hypothesis' : 'initializing', rs.status==='done' ? 'Cycle batch completed' : 'System idle');
       document.getElementById('pbadge').style.display='none';
       stopPoll(); fetchProg();
       // Show results modal when a finite run completes (not manually stopped)
@@ -2898,6 +3597,10 @@ async function resetExp(){
   document.getElementById('agent-current-int').textContent = 'No intervention yet';
   document.getElementById('agent-current-hyp').textContent = 'Start the experiment to generate first agent hypothesis.';
   document.getElementById('agent-current-rsn').textContent = 'The AI reasoning trace will stream here once cycles begin.';
+  document.getElementById('agent-confidence').textContent = '—';
+  setSystemStage('initializing', 'System idle');
+  setThinkingStage('observe');
+  applyScenarioInsights(deriveScenarioInsights(setupValues));
   fetchProg();
   resetChat();
   // Re-open setup modal so user can reconfigure from scratch
@@ -2912,6 +3615,10 @@ async function resetExp(){
 // ════════════════════════════════════════════════
 buildSliders();
 updateModalPreview();
+refreshMetaUI();
+updateScoreboard([]);
+setSystemStage('initializing', 'System idle');
+setThinkingStage('observe');
 // Passive poll when idle
 setInterval(()=>{ if(!_poll) fetchData(); },8000);
 setInterval(()=>{ if(!_poll) fetchProg(); },30000);
