@@ -176,7 +176,12 @@ def _background_runner(target_cycles, delay):
 # ── Routes ────────────────────────────────────────────────────────────────────
 
 @app.route("/")
-def index():
+def home():
+    return render_template("landing.html")
+
+
+@app.route("/lab")
+def lab():
     return render_template("index.html")
 
 

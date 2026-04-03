@@ -2745,13 +2745,56 @@ function drawReef() {
     ctx.save();
     ctx.translate(f.x, f.y);
     ctx.rotate(Math.atan2(f.vy, f.vx) + Math.sin(t * 2 + f.phase) * 0.12);
+    ctx.scale(dir, 1);
+    const bodyL = f.size * 1.45;
+    const bodyW = f.size * 0.78;
+
+    // Arrow-like body with a softer fish contour
     ctx.beginPath();
-    ctx.moveTo(f.size * 1.2 * dir, 0);
-    ctx.lineTo(-f.size * 0.85 * dir, -f.size * 0.55);
-    ctx.lineTo(-f.size * 0.55 * dir, 0);
-    ctx.lineTo(-f.size * 0.85 * dir, f.size * 0.55);
+    ctx.moveTo(bodyL, 0);
+    ctx.quadraticCurveTo(bodyL * 0.35, -bodyW * 0.95, -bodyL * 0.65, -bodyW * 0.62);
+    ctx.lineTo(-bodyL * 0.95, -bodyW * 0.2);
+    ctx.lineTo(-bodyL * 0.72, 0);
+    ctx.lineTo(-bodyL * 0.95, bodyW * 0.2);
+    ctx.lineTo(-bodyL * 0.65, bodyW * 0.62);
+    ctx.quadraticCurveTo(bodyL * 0.35, bodyW * 0.95, bodyL, 0);
     ctx.closePath();
     ctx.fillStyle = `hsla(${f.hue + 8}, 92%, ${60 - warmStress * 20}%, ${0.82 - bleach * 0.28})`;
+    ctx.fill();
+
+    // Dorsal fin
+    ctx.beginPath();
+    ctx.moveTo(-bodyL * 0.08, -bodyW * 0.1);
+    ctx.lineTo(-bodyL * 0.36, -bodyW * 0.88);
+    ctx.lineTo(bodyL * 0.15, -bodyW * 0.42);
+    ctx.closePath();
+    ctx.fillStyle = `hsla(${f.hue + 16}, 92%, ${66 - warmStress * 16}%, ${0.62 - bleach * 0.2})`;
+    ctx.fill();
+
+    // Tail fin
+    ctx.beginPath();
+    ctx.moveTo(-bodyL * 0.95, 0);
+    ctx.lineTo(-bodyL * 1.42, -bodyW * 0.62);
+    ctx.lineTo(-bodyL * 1.18, 0);
+    ctx.lineTo(-bodyL * 1.42, bodyW * 0.62);
+    ctx.closePath();
+    ctx.fillStyle = `hsla(${f.hue - 6}, 96%, ${58 - warmStress * 14}%, ${0.74 - bleach * 0.22})`;
+    ctx.fill();
+
+    // Eye (white sclera + pupil + tiny highlight)
+    const eyeX = bodyL * 0.46;
+    const eyeY = -bodyW * 0.12;
+    ctx.beginPath();
+    ctx.arc(eyeX, eyeY, Math.max(1.5, f.size * 0.12), 0, Math.PI * 2);
+    ctx.fillStyle = 'rgba(240,248,255,0.96)';
+    ctx.fill();
+    ctx.beginPath();
+    ctx.arc(eyeX + f.size * 0.02, eyeY, Math.max(0.8, f.size * 0.06), 0, Math.PI * 2);
+    ctx.fillStyle = 'rgba(6,12,20,0.95)';
+    ctx.fill();
+    ctx.beginPath();
+    ctx.arc(eyeX - f.size * 0.03, eyeY - f.size * 0.03, Math.max(0.5, f.size * 0.025), 0, Math.PI * 2);
+    ctx.fillStyle = 'rgba(255,255,255,0.9)';
     ctx.fill();
     ctx.restore();
   }
