@@ -1,5 +1,6 @@
 import json
 import os
+import re
 import threading
 import time
 from collections import deque
@@ -31,6 +32,54 @@ def _ensure_program_file():
         with open(DEFAULT_PROGRAM_FILE) as src, open(PROGRAM_FILE, "w") as dst:
             dst.write(src.read())
 
+
+def _looks_gibberish_text(text):
+    if not isinstance(text, str):
+        return True
+    normalized = re.sub(r"\s+", " ", text).strip()
+    if len(normalized) < 24:
+        return False
+
+    words = re.findall(r"[A-Za-z]{3,}", normalized)
+    if len(words) < 6:
+        return False
+
+    vowel_words = sum(1 for w in words if re.search(r"[aeiouAEIOU]", w))
+    vowel_ratio = vowel_words / max(len(words), 1)
+    consonant_chunks = re.findall(r"\b[bcdfghjklmnpqrstvwxyz]{6,}\b", normalized, flags=re.IGNORECASE)
+    repeated_symbols = re.findall(r"[_`~|^<>]{2,}", normalized)
+
+    return vowel_ratio < 0.56 or bool(consonant_chunks) or bool(repeated_symbols)
+
+
+def _sanitize_history_entry(entry):
+    if not isinstance(entry, dict):
+        return False
+
+    state = entry.get("state_after", {}) or {}
+    intervention = str(entry.get("intervention", "combined")).replace("_", " ")
+    dhw = state.get("dhw", "?")
+    omega = state.get("omega_arag", "?")
+    water_quality = state.get("water_quality", "?")
+
+    fallback_hypothesis = (
+        f"Applying {intervention} is expected to reduce reef stress while stabilizing chemistry and biodiversity."
+    )
+    fallback_reasoning = (
+        f"Current signals DHW={dhw}, omega_arag={omega}, and water_quality={water_quality}. "
+        f"Intervention {intervention} was selected to improve resilience in the next cycles."
+    )
+
+    changed = False
+    if _looks_gibberish_text(entry.get("hypothesis", "")):
+        entry["hypothesis"] = fallback_hypothesis
+        changed = True
+    if _looks_gibberish_text(entry.get("reasoning", "")):
+        entry["reasoning"] = fallback_reasoning
+        changed = True
+
+    return changed
+
 # ── Runner state ──────────────────────────────────────────────────────────────
 _runner = {
     "running": False,
@@ -46,7 +95,16 @@ _run_lock = threading.Lock()
 def load_history():
     if os.path.exists(RESULTS_FILE):
         with open(RESULTS_FILE) as f:
-            return json.load(f)
+            history = json.load(f)
+
+        changed = False
+        if isinstance(history, list):
+            for entry in history:
+                changed = _sanitize_history_entry(entry) or changed
+
+        if changed:
+            save_history(history)
+        return history
     return []
 
 

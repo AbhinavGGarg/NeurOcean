@@ -1,7 +1,14 @@
+import path from "node:path";
+import { fileURLToPath } from "node:url";
+
 const PY_BACKEND_URL = process.env.PY_BACKEND_URL || "http://127.0.0.1:5000";
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  turbopack: {
+    root: __dirname
+  },
   async rewrites() {
     return [
       { source: "/legacy/:path*", destination: `${PY_BACKEND_URL}/:path*` },
