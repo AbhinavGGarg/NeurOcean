@@ -153,3 +153,14 @@ cython_debug/
 
 # macOS
 .DS_Store
+
+# Next.js / frontend
+node_modules/
+.next/
+out/
+*.tsbuildinfo
+
+# Keep frontend utility sources tracked
+!lib/
+!lib/**/*.ts
+!lib/**/*.tsx

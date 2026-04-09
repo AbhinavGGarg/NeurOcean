@@ -2,14 +2,29 @@
   "version": 2,
   "builds": [
     {
+      "src": "package.json",
+      "use": "@vercel/next"
+    },
+    {
       "src": "api/index.py",
       "use": "@vercel/python"
     }
   ],
   "routes": [
     {
-      "src": "/(.*)",
+      "src": "/legacy(?:/(.*))?$",
       "dest": "api/index.py"
+    },
+    {
+      "src": "/(experiments|run|start|stop|runner-status|program|configure|reset|health-check)$",
+      "dest": "api/index.py"
+    },
+    {
+      "handle": "filesystem"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/$1"
     }
   ]
 }

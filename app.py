@@ -185,6 +185,17 @@ def lab():
     return render_template("index.html")
 
 
+@app.route("/legacy")
+@app.route("/legacy/")
+def legacy_home():
+    return render_template("landing.html")
+
+
+@app.route("/legacy/lab")
+def legacy_lab():
+    return render_template("index.html")
+
+
 @app.route("/experiments")
 def get_experiments():
     history = load_history()

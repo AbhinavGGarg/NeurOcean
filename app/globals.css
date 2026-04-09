@@ -1,0 +1,108 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: dark;
+}
+
+* {
+  border-color: rgba(138, 186, 239, 0.22);
+}
+
+body {
+  @apply bg-bg-950 text-slate-100 antialiased selection:bg-ocean-300/30 selection:text-white;
+  font-feature-settings: "rlig" 1, "calt" 1;
+  min-height: 100vh;
+  overflow-x: clip;
+  background:
+    radial-gradient(circle at 12% 12%, rgba(49, 141, 232, 0.24), transparent 46%),
+    radial-gradient(circle at 84% 18%, rgba(43, 212, 183, 0.14), transparent 40%),
+    radial-gradient(circle at 72% 72%, rgba(96, 109, 255, 0.11), transparent 42%),
+    linear-gradient(180deg, #03070f 0%, #040b18 40%, #050d1f 100%);
+}
+
+.noise-layer {
+  background-image: radial-gradient(circle at 1px 1px, rgba(165, 208, 255, 0.08) 1px, transparent 0);
+  background-size: 3px 3px;
+}
+
+.grid-layer {
+  background-image:
+    linear-gradient(to right, rgba(139, 192, 244, 0.06) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(139, 192, 244, 0.06) 1px, transparent 1px);
+  background-size: 42px 42px;
+  mask-image: radial-gradient(circle at center, black 42%, transparent 88%);
+}
+
+.text-balance {
+  text-wrap: balance;
+}
+
+.glow-outline {
+  box-shadow:
+    0 0 0 1px rgba(117, 200, 255, 0.3),
+    0 22px 60px rgba(5, 22, 44, 0.55),
+    inset 0 1px 0 rgba(194, 229, 255, 0.18);
+}
+
+.glass-panel {
+  border: 1px solid rgba(150, 199, 255, 0.26);
+  background: linear-gradient(180deg, rgba(10, 27, 49, 0.62), rgba(7, 18, 37, 0.72));
+  backdrop-filter: blur(16px);
+}
+
+.ocean-divider {
+  background-image: linear-gradient(to right, transparent, rgba(122, 205, 250, 0.45), transparent);
+  height: 1px;
+}
+
+.wave-line {
+  position: absolute;
+  left: -10%;
+  width: 120%;
+  height: 1px;
+  background: linear-gradient(to right, transparent, rgba(147, 214, 255, 0.42), transparent);
+  opacity: 0.45;
+  animation: drift-wave 16s linear infinite;
+}
+
+@keyframes drift-wave {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-120px);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    transform: translateX(-110%);
+  }
+  100% {
+    transform: translateX(110%);
+  }
+}
+
+.sheen::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(110deg, transparent 30%, rgba(178, 223, 255, 0.2), transparent 70%);
+  transform: translateX(-120%);
+  animation: shimmer 6s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@layer base {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply tracking-tight;
+  }
+}
