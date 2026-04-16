@@ -467,5 +467,3 @@ sim._hotspot_history = deque([approx_hotspot] * 12, maxlen=12)
 MIT
 
 ---
-
-*Built overnight at GenAI Genesis 2026 — health score 38.6 → 99.9.*
