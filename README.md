@@ -2,8 +2,6 @@
 
 **An autonomous AI research agent that runs continuous experiments in a simulated coral reef ecosystem — discovering intervention strategies to reverse bleaching, restore biodiversity, and fight ocean acidification.**
 
-Built for the **Google GenAI Genesis Hackathon** — Best Sustainability AI Hack challenge.
-
 > *"Reef restoration experiments take 7 years in the real ocean. NeurOcean runs 10,000 overnight."*
 
 ---
